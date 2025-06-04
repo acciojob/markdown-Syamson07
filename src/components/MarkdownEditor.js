@@ -1,33 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { marked } from 'marked';
+import React, { useState, useEffect } from "react";
+import marked from "marked"; // make sure to install: npm install marked
 
-function MarkdownEditor() {
-  const [markdown, setMarkdown] = useState('');
-  const [preview, setPreview] = useState('');
+const MarkdownEditor = () => {
+  const [markdown, setMarkdown] = useState("");
+  const [htmlPreview, setHtmlPreview] = useState("<p class='loading'>Loading...</p>");
 
   useEffect(() => {
-    const html = marked(markdown, { breaks: true });
-    setPreview(html);
-  }, [markdown]);
+    const timeout = setTimeout(() => {
+      setHtmlPreview(marked(markdown));
+    }, 300); // slight debounce for better performance
 
-  const handleChange = (e) => {
-    setMarkdown(e.target.value);
-  };
+    return () => clearTimeout(timeout);
+  }, [markdown]);
 
   return (
     <div className="editor-container">
       <textarea
         className="textarea"
         value={markdown}
-        onChange={handleChange}
-        placeholder="Enter Markdown here..."
+        onChange={(e) => setMarkdown(e.target.value)}
+        placeholder="Write Markdown here..."
       />
       <div
         className="preview"
-        dangerouslySetInnerHTML={{ __html: preview }}
-      />
+        dangerouslySetInnerHTML={{ __html: htmlPreview }}
+      ></div>
     </div>
   );
-}
+};
 
 export default MarkdownEditor;
