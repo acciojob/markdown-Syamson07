@@ -1,6 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import ReactDOM from 'react-dom'; // ✅ Use the classic React 17 import
+import App from './components/App'; // Make sure the path is correct
+import './components/styles.css';
+import './components/MarkdownEditor';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+ReactDOM.render(<App />, document.getElementById('root')); // ✅ React 17 syntax
